@@ -1,0 +1,64 @@
+@media only screen and (max-width: 480px){
+    body,table,td,p,a,li,blockquote{
+        -webkit-text-size-adjust:none !important;
+    }
+}
+@media only screen and (max-width: 480px){
+#templateBody {
+    background-color: #FFFFFF;
+}
+}
+@media only screen and (max-width: 480px){
+    .footerContent{
+        /*@editable*/font-size:13px !important;
+    }
+}
+@media only screen and (max-width: 480px) {
+#templateContainer {
+border: none !important;
+}
+
+.leftColumnContent img
+}
+.email_header_logo {
+width: 200px;
+height: auto;
+        max-width: 100% !important;
+        max-height: auto !important;
+}
+.bodyCardContainer {
+margin: 0 auto;
+}
+@media only screen and (min-width: 480px) {
+#templateContainer {
+border: none
+}
+}
+.bodyCardButton {
+color: #5fc5ba;
+       text-align: center;
+       font-size: 18px;
+       font-weight: 900;
+}
+.bodyCardButtonPill {
+background: #3cb4a0;
+            border-radius: 4px;
+height: 50px;
+        font-size: 17px;
+color: #FFF !important;
+       border-bottom: 2px solid #3cb4a0;
+}
+.bodyCardMessage {
+color: #777;
+       text-align: center;
+       font-size: 14px;
+}
+.footerContent a {
+color: #BBBBBB !important;
+       text-decoration: underline;
+}
+.bodyCardLink {
+    text-decoration: none !important;
+color: #FFF !important;
+}
+
