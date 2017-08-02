@@ -1914,16 +1914,16 @@ css_error consumeStringChars(css_lexer *lexer)
 
 			error = consumeEscape(lexer, true);
 			if (error != CSS_OK) {
-				/* Rewind '\\', so we do the 
-				 * right thing next time. */
-				lexer->bytesReadForToken -= clen;
-
 				/* Convert EOF to OK. This causes the caller
 				 * to believe that all StringChars have been
 				 * processed. Eventually, the '\\' will be
 				 * output as a CHAR. */
 				if (error == CSS_EOF)
 					return CSS_OK;
+
+				/* Rewind '\\', so we do the
+				 * right thing next time. */
+				lexer->bytesReadForToken -= clen;
 
 				return error;
 			}

@@ -744,6 +744,8 @@ css_error handleBlockContent(css_language *c, const parserutils_vector *vector)
 {
 	context_entry *entry;
 	css_rule *rule;
+	int ctx = 0;
+	const css_token *tmp = NULL;
 
 	/* Block content comprises either declarations (if the current block is
 	 * associated with @page, @font-face or a selector), or rulesets (if the
@@ -759,6 +761,14 @@ css_error handleBlockContent(css_language *c, const parserutils_vector *vector)
 			rule->type != CSS_RULE_MEDIA && 
 			rule->type != CSS_RULE_FONT_FACE))
 		return CSS_INVALID;
+
+	/*
+	 * Check if rule is empty, there is nothing to process
+	 */
+	consumeWhitespace(vector, &ctx);
+	tmp = parserutils_vector_iterate(vector, &ctx);
+	if (tmp == NULL)
+		return CSS_OK;
 
 	if (rule->type == CSS_RULE_MEDIA) {
 		/* Expect rulesets */
@@ -2417,7 +2427,7 @@ css_error parseProperty(css_language *c, const css_token *property,
 			break;
 	}
 	if (i == LAST_PROP + 1)
-		return CSS_INVALID;
+		return CSS_OK; // property unsupported, skip
 
 	/* Get handler */
 	handler = property_handlers[i - FIRST_PROP];

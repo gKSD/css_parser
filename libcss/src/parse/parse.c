@@ -27,8 +27,6 @@
 
 #ifndef NDEBUG
 #include <stdio.h>
-#include <lex/lex.h>
-
 extern void parserutils_stack_dump(parserutils_stack *stack, const char *prefix,
 		void (*printer)(void *item));
 extern void parserutils_vector_dump(parserutils_vector *vector,
@@ -717,8 +715,10 @@ css_error parseStart(css_parser *parser)
 		printf("Begin stylesheet\n");
 #endif
 		if (parser->event != NULL) {
-			parser->event(CSS_PARSER_START_STYLESHEET, NULL, 
+			error = parser->event(CSS_PARSER_START_STYLESHEET, NULL,
 					parser->event_pw);
+			if (error != CSS_OK)
+				return error;
 		}
 
 		error = eatWS(parser);
@@ -746,8 +746,10 @@ css_error parseStart(css_parser *parser)
 	printf("End stylesheet\n");
 #endif
 	if (parser->event != NULL) {
-		parser->event(CSS_PARSER_END_STYLESHEET, NULL, 
+		error = parser->event(CSS_PARSER_END_STYLESHEET, NULL,
 				parser->event_pw);
+		if (error != CSS_OK)
+			return error;
 	}
         
         unref_interned_strings_in_tokens(parser);
@@ -1027,7 +1029,9 @@ css_error parseRulesetEnd(css_parser *parser)
 	printf("End ruleset\n");
 #endif
 	if (parser->event != NULL) {
-		parser->event(CSS_PARSER_END_RULESET, NULL, parser->event_pw);
+		error = parser->event(CSS_PARSER_END_RULESET, NULL, parser->event_pw);
+		if (error != CSS_OK)
+			return error;
 	}
 
 	return done(parser);
@@ -1181,7 +1185,9 @@ css_error parseAtRuleEnd(css_parser *parser)
 	printf("End at-rule\n");
 #endif
 	if (parser->event != NULL) {
-		parser->event(CSS_PARSER_END_ATRULE, NULL, parser->event_pw);
+		error = parser->event(CSS_PARSER_END_ATRULE, NULL, parser->event_pw);
+		if (error != CSS_OK)
+			return error;
 	}
 
 	return done(parser);
@@ -1206,8 +1212,10 @@ css_error parseBlock(css_parser *parser)
 		printf("Begin block\n");
 #endif
 		if (parser->event != NULL) {
-			parser->event(CSS_PARSER_START_BLOCK, NULL,
+			error = parser->event(CSS_PARSER_START_BLOCK, NULL,
 					parser->event_pw);
+			if (error != CSS_OK)
+				return error;
 		}
 
 		if (token->type != CSS_TOKEN_CHAR || 
@@ -1271,7 +1279,9 @@ css_error parseBlock(css_parser *parser)
 	printf("End block\n");
 #endif
 	if (parser->event != NULL) {
-		parser->event(CSS_PARSER_END_BLOCK, NULL, parser->event_pw);
+		error = parser->event(CSS_PARSER_END_BLOCK, NULL, parser->event_pw);
+		if (error != CSS_OK)
+			return error;
 	}
 
         unref_interned_strings_in_tokens(parser);
@@ -1321,10 +1331,12 @@ css_error parseBlockContent(css_parser *parser)
 							__func__, tprinter);
 #endif
 					if (parser->event != NULL) {
-						parser->event(
+						error = parser->event(
 							CSS_PARSER_BLOCK_CONTENT,
 							parser->tokens, 
 							parser->event_pw);
+						if (error != CSS_OK)
+							return error;
 					}
 
 					unref_interned_strings_in_tokens(
@@ -1348,10 +1360,12 @@ css_error parseBlockContent(css_parser *parser)
 							__func__, tprinter);
 #endif
 					if (parser->event != NULL) {
-						parser->event(
-							CSS_PARSER_BLOCK_CONTENT,
+						error = parser->event(
+							CSS_PARSER_DECLARATION,
 							parser->tokens, 
 							parser->event_pw);
+						if (error != CSS_OK)
+							return error;
 					}
 
 					error = getToken(parser, &token);
@@ -1378,10 +1392,12 @@ css_error parseBlockContent(css_parser *parser)
 							__func__, tprinter);
 #endif
 					if (parser->event != NULL) {
-						parser->event(
+						error = parser->event(
 							CSS_PARSER_BLOCK_CONTENT,
 							parser->tokens,
 							parser->event_pw);
+						if (error != CSS_OK)
+							return error;
 					}
 
 					unref_interned_strings_in_tokens(
@@ -1401,9 +1417,11 @@ css_error parseBlockContent(css_parser *parser)
 						__func__, tprinter);
 #endif
 				if (parser->event != NULL) {
-					parser->event(CSS_PARSER_BLOCK_CONTENT,
+					error = parser->event(CSS_PARSER_BLOCK_CONTENT,
 							parser->tokens,
 							parser->event_pw);
+					if (error != CSS_OK)
+						return error;
 				}
 
 				unref_interned_strings_in_tokens(parser);
@@ -1542,8 +1560,10 @@ css_error parseDeclaration(css_parser *parser)
 		parserutils_vector_dump(parser->tokens, __func__, tprinter);
 #endif
 		if (parser->event != NULL) {
-			parser->event(CSS_PARSER_DECLARATION, parser->tokens,
+			error = parser->event(CSS_PARSER_DECLARATION, parser->tokens,
 					parser->event_pw);
+			if (error != CSS_OK)
+				return error;
 		}
 		break;
 	}

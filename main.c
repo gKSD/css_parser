@@ -260,7 +260,7 @@ int main(int argc, char **argv)
     }
 
     size_t data_size = strlen(data);
-    printf("INPUT DATA: %s\n", data);
+    printf("INPUT DATA [len: %zu]: %s\n", data_size, data);
 
     css_stylesheet_params params;
     params.params_version = CSS_STYLESHEET_PARAMS_VERSION_1;
